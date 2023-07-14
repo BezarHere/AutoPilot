@@ -1,5 +1,6 @@
 #include "framework.h"
 #include "AutoPilot.h"
+#include "core/Vector2.h"
 
 #define MAX_LOADSTRING 100
 
@@ -15,13 +16,13 @@ LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 FILE *StartConsole();
 
+// the widnows equavilent of main()
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 										 _In_opt_ HINSTANCE hPrevInstance,
 										 _In_ LPWSTR    lpCmdLine,
 										 _In_ int       nCmdShow)
 {
 	StartConsole();
-	print("win main");
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
 
@@ -94,19 +95,37 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //        In this function, we save the instance handle in a global variable and
 //        create and display the main program window.
 //
+// called at the window creation
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-	print("making instance");
 	hInst = hInstance; // Store instance handle in our global variable
 
-	HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+	const Point2 initUsedDefault{ CW_USEDEFAULT, 0 };
+	const Point2 initWindowPosition{ initUsedDefault };
+	const Point2 initWindowSize{ initUsedDefault };
+	HWND parentWindow{ nullptr };
+	HMENU menu{ nullptr };
+	LPVOID lpParam{ nullptr };
+
+	HWND hWnd = CreateWindowW(
+		szWindowClass,
+		szTitle,
+		WS_OVERLAPPEDWINDOW,
+		initWindowPosition.x,
+		initWindowPosition.y,
+		initWindowSize.x,
+		initWindowSize.y,
+		parentWindow,
+		menu,
+		hInstance,
+		lpParam);
 
 	if (!hWnd)
 	{
 		return FALSE;
 	}
 
+	Application::init();
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
@@ -122,50 +141,49 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_PAINT    - Paint the main window
 //  WM_DESTROY  - post a quit message and return
 //
-//
+// Called very frame the window is displayed (processing)
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	print("wnd proc");
 	switch (message)
 	{
 	case WM_COMMAND:
-			{
-					int wmId = LOWORD(wParam);
-					// Parse the menu selections:
-					switch (wmId)
-					{
-					case IDM_ABOUT:
-							DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-							break;
-					case IDM_EXIT:
-							DestroyWindow(hWnd);
-							break;
-					default:
-							return DefWindowProc(hWnd, message, wParam, lParam);
-					}
-			}
-			break;
+		{
+				int wmId = LOWORD(wParam);
+				// Parse the menu selections:
+				switch (wmId)
+				{
+				case IDM_ABOUT:
+						DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
+						break;
+				case IDM_EXIT:
+						DestroyWindow(hWnd);
+						break;
+				default:
+						return DefWindowProc(hWnd, message, wParam, lParam);
+				}
+		}
+		break;
 	case WM_PAINT:
-			{
-					PAINTSTRUCT ps;
-					HDC hdc = BeginPaint(hWnd, &ps);
-					// TODO: Add any drawing code that uses hdc here...
-					EndPaint(hWnd, &ps);
-			}
-			break;
+		Application::draw();
+		{
+				PAINTSTRUCT ps;
+				HDC hdc = BeginPaint(hWnd, &ps);
+				// TODO: Add any drawing code that uses hdc here...
+				EndPaint(hWnd, &ps);
+		}
+		break;
 	case WM_DESTROY:
-			PostQuitMessage(0);
-			break;
+		PostQuitMessage(0);
+		break;
 	default:
-			return DefWindowProc(hWnd, message, wParam, lParam);
+		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
 	return 0;
 }
 
-// Message handler for about box.
+// called every frame when the about message box is displayed
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	print("about");
 	UNREFERENCED_PARAMETER(lParam);
 	switch (message)
 	{

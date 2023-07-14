@@ -76,6 +76,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -90,6 +91,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -104,6 +106,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -118,6 +121,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -127,20 +131,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AutoPilot.h" />
-    <ClInclude Include="framework.h" />
-    <ClInclude Include="Resource.h" />
-    <ClInclude Include="targetver.h" />
+    <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\AutoPilot.h" />
+    <ClInclude Include="src\core\Vector2.h" />
+    <ClInclude Include="src\framework.h" />
+    <ClInclude Include="src\Resource.h" />
+    <ClInclude Include="src\targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AutoPilot.cpp" />
+    <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\AutoPilot.cpp" />
+    <ClCompile Include="src\core\Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="AutoPilot.rc" />
+    <ResourceCompile Include="src\AutoPilot.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="AutoPilot.ico" />
-    <Image Include="small.ico" />
+    <Image Include="src\AutoPilot.ico" />
+    <Image Include="src\small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

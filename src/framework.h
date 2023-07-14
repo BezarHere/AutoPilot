@@ -12,3 +12,5 @@
 #define peek(p) std::cout << #p << ": " << (p) << '\n'
 #define print(p) std::cout << (p) << '\n'
 #define printe(p) std::cout << (#p) << '\n'
+
+#define global inline static
